@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path")
 require("dotenv").config();
+const usersRouter = require('./controllers/users')
 
 const app = express();
 
@@ -16,9 +17,14 @@ console.log(error);
 }
 })()
 
+app.use(express.json())
+
 //Rutas frontend
 app.use("/", express.static(path.resolve("views", "home")))
 app.use("/styles", express.static(path.resolve("views", "styles")));
 app.use('/signup', express.static(path.resolve('views','signup'))) //ruta del signup
+
+//Rutas backend
+app.use("/api/users", usersRouter)
 
 module.exports = app;
