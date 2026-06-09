@@ -30,4 +30,9 @@ const createNavHome = () => {
     </div>`;
 };
 
+if (window.location.pathname === "/") {
 createNavHome();
+}
+
+const navBtn = navbar;
+console.log(navBtn);

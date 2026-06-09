@@ -19,6 +19,7 @@ console.log(error);
 //Rutas frontend
 app.use("/", express.static(path.resolve("views", "home")))
 app.use("/styles", express.static(path.resolve("views", "styles")));
-app.use('/signup', express.static(path.resolve('views','signup'))) //ruta del signup
+app.use('/signup', express.static(path.resolve('views','signup'))); //ruta del signup
+app.use('/components', express.static(path.resolve('views','components'))); 
 
 module.exports = app;
