@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const path = require("path")
 require("dotenv").config();
 const usersRouter = require('./controllers/users')
+const cors = require("cors")
+const cookieParser = require("cookie-parser")
+const morgan = require("morgan")
 
 const app = express();
 
@@ -17,12 +20,17 @@ console.log(error);
 }
 })()
 
+app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 
 //Rutas frontend
 app.use("/", express.static(path.resolve("views", "home")))
 app.use("/styles", express.static(path.resolve("views", "styles")));
 app.use('/signup', express.static(path.resolve('views','signup'))) //ruta del signup
+app.use('/components', express.static(path.resolve('components')));
+
+app.use(morgan("tiny"))
 
 //Rutas backend
 app.use("/api/users", usersRouter)

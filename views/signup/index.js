@@ -1,6 +1,7 @@
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const NAME_REGEX = /^[A-Z\u00d1][a-zA-Z-ÿí\u00f1\u00d1]+(\s*[A-Z\u00d1][a-zA-Z-ÿí\u00f1\u00d1\s]*)$/;
+const NAME_REGEX =
+  /^[A-Z\u00d1][a-zA-Z-ÿí\u00f1\u00d1]+(\s*[A-Z\u00d1][a-zA-Z-ÿí\u00f1\u00d1\s]*)$/;
 
 const form = document.querySelector("#form");
 const nameInput = document.querySelector("#name-input");
@@ -8,7 +9,9 @@ const emailInput = document.querySelector("#email-input");
 const passwordInput = document.querySelector("#password-input");
 const confirmPasswordInput = document.querySelector("#match-input");
 const formBtn = document.querySelector("#form-btn");
+const notification = document.querySelector("#notification")
 
+import { createNotification } from "/components/notification.js";
 
 let nameTest = false;
 let emailTest = false;
@@ -69,19 +72,36 @@ confirmPasswordInput.addEventListener("input", (e) => {
   validation(confirmPasswordInput, matchTest);
 });
 
-form.addEventListener("submit", async e => {
-e.preventDefault()
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-try {
-const newUser = {
-  name: nameInput.value, 
-  email: emailInput.value,
-  password: passwordInput.value
-}
-const response = await axios.post("/api/users", newUser)
-console.log(response);
+  try {
+    const newUser = {
+      name: nameInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+    };
+    const {data} = await axios.post("/api/users", newUser);
 
-} catch (error) {
-console.log(error)
-}
+     createNotification(false, data);
+    setTimeout(() => {
+ notification.classList.add("hidden")
+    }, 5000);
+
+   nameInput.value = ""
+   emailInput.value = ""
+ passwordInput.value = ""
+confirmPasswordInput.value = ""
+
+validation(nameInput, false)
+validation(emailInput, false)
+validation(passwordInput, false)
+validation(confirmPasswordInput, false)
+
+  } catch (error) {
+     createNotification(true, error.response.data.error);
+    setTimeout(() => {
+ notification.classList.add("hidden")
+    }, 5000);
+  }
 });
