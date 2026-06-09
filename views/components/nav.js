@@ -1,27 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TodoApp</title>
-<link rel="stylesheet" href="../styles/output.css">
-</head>
-<body>
- <nav
-      id="navbar"
-      class="fixed top-0 left-0 right-0 bg-indigo-700 h-16"
-    ></nav>
+const navbar = document.querySelector('#navbar');
 
-    <div
+const createNavHome = () => {
+    navbar.innerHTML = `<div
       class="pt-16 h-screen flex justify-center items-center flex-col px-4 gap-4 md:flex-row lg:w-3/5 md:w-9/12 md:mx-auto md:gap-8"
     >
       <h1 class="text-indigo-700 font-bold text-4xl md:text-6xl">TodoApp</h1>
       <div class="flex flex-col gap-4 md:text-xl">
         <p class="text-justify">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-          doloremque architecto tempora dolorem dolore amet, modi sed velit
-          blanditiis nemo tempore. Facere quisquam libero enim illum voluptatum
-          quibusdam tenetur voluptas!
+          Primer Commit del proyecto, 
+          el cual se trata de una aplicación de tareas, 
+          donde el usuario podrá crear, editar y eliminar tareas, 
+          además de marcar las tareas como completadas o pendientes.
+          El proyecto está desarrollado con Python y Flask en el backend, 
+          y Tailwind CSS en el frontend. 
         </p>
         <div class="flex justify-around gap-4">
           <a
@@ -34,11 +25,9 @@
             href="/signup/"
             >Registro</a
           >
-          <h2>hola</h2>
         </div>
       </div>
-    </div>
-    
-    <script src="/components/nav.js"></script>
-</body>
-</html>
+    </div>`;
+};
+
+createNavHome();
