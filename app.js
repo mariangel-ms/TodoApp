@@ -28,7 +28,7 @@ app.use(express.json())
 app.use("/", express.static(path.resolve("views", "home")))
 app.use("/styles", express.static(path.resolve("views", "styles")));
 app.use('/signup', express.static(path.resolve('views','signup'))) //ruta del signup
-app.use('/components', express.static(path.resolve('views','components')));
+app.use('/components', express.static(path.resolve('components')));
 
 app.use(morgan("tiny"))
 
