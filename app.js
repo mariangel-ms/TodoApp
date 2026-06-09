@@ -30,6 +30,10 @@ app.use("/styles", express.static(path.resolve("views", "styles")));
 app.use('/signup', express.static(path.resolve('views','signup'))) //ruta del signup
 app.use('/components', express.static(path.resolve('views','components')));
 
+
+app.use('/login', express.static(path.resolve('views', 'login')));
+
+
 app.use(morgan("tiny"))
 
 //Rutas backend
