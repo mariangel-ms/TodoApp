@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-//Probar haciendo console log al registrar, para ver como viene
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
