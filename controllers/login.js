@@ -3,9 +3,10 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-loginRouter.post("/", async (request, response) => {
+loginRouter.post('/', async (request, response) => {
   const { email, password } = request.body;
   const userExists = await User.findOne({ email });
+  console.log(email, password);
   
   if (!userExists) {
     return response.status(400).json({error: "email o contraseña incorrectos"});
