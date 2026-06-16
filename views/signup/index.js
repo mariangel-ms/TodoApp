@@ -19,35 +19,21 @@ let passwordTest = false;
 let matchTest = false;
 
 const validation = (element, validationTest) => {
-  formBtn.disabled =
-    nameTest && emailTest && passwordTest && matchTest ? false : true;
+  //Si todos los inputs estan validades el boton se activa
+  formBtn.disabled = nameTest && emailTest && passwordTest && matchTest ? false : true;
 
-  element.classList.remove(
-    "outline",
-    "outline-2",
-    "outline-green-700",
-    "outline-red-700",
-    "outline-indigo-700",
-  );
+if (element.value === '') {
+  element.classList.remove('outline-red-700', 'outline-green-700', 'outline');
+  element.classList.add('focus:outline-indigo-700', 'outline-2');
 
-  if (validationTest) {
-    element.classList.remove("focus:outline-indigo-700");
-    element.classList.add("outline-green-700", "outline-2", "outline");
-  }
-  if (!validationTest) {
-    element.classList.remove("outline-green-700");
-    element.classList.add("outline", "outline-2", "outline-red-700");
-  }
+} else if (validationTest) {
+  element.classList.remove('focus:outline-indigo-700', 'outline-red-700');
+  element.classList.add('outline-green-700', 'outline-2', 'outline');
 
-  if (element.value == "") {
-    element.classList.remove(
-      "outline",
-      "outline-2",
-      "outline-green-700",
-      "outline-red-700",
-      "outline-indigo-700",
-    );
-  }
+} else {
+  element.classList.remove('focus:outline-indigo-700', 'outline-green-700');
+  element.classList.add('outline-red-700', 'outline-2', 'outline');
+}
 };
 
 nameInput.addEventListener("input", (e) => {
@@ -81,27 +67,31 @@ form.addEventListener("submit", async (e) => {
       email: emailInput.value,
       password: passwordInput.value,
     };
+    //Se envia el usuario al backend
     const {data} = await axios.post("/api/users", newUser);
 
      createNotification(false, data);
     setTimeout(() => {
- notification.classList.add("hidden")
+ notification.innerHTML = ""
     }, 5000);
 
+    //Limpieza del formulario
    nameInput.value = ""
    emailInput.value = ""
  passwordInput.value = ""
 confirmPasswordInput.value = ""
 
+//Devuelve los inputs a su estado inicial
 validation(nameInput, false)
 validation(emailInput, false)
 validation(passwordInput, false)
 validation(confirmPasswordInput, false)
 
   } catch (error) {
+    //Llama a la notificacion pero como error
      createNotification(true, error.response.data.error);
     setTimeout(() => {
- notification.classList.add("hidden")
+notification.innerHTML = ""
     }, 5000);
   }
 });
