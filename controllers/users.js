@@ -3,6 +3,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 const { PAGE_URL } = require('../config'); // Importar la URL de la página desde el archivo de configuración
 
 //se valida que los campos no estén vacíos y se hace desestructuracion de objetos

@@ -81,7 +81,7 @@ form.addEventListener("submit", async (e) => {
  passwordInput.value = ""
 confirmPasswordInput.value = ""
 
-//Devuelve los inputs a su estado inicial
+//Devuelve los inputs a su estado inicial, osea deshabilita el boton
 validation(nameInput, false)
 validation(emailInput, false)
 validation(passwordInput, false)

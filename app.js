@@ -3,6 +3,7 @@ const mongoose = require("mongoose"); // La librería para conectarnos y hablar 
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
 require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const cors = require("cors") //Middleware para permitir/bloquear peticiones desde otros puertos o dominios
 const cookieParser = require("cookie-parser") //Middleware para leer y manipular las cookies que envía el navegador
 const morgan = require("morgan") //Middleware para ver en la consola las peticiones HTTP que van llegando (Logs)
