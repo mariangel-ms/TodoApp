@@ -24,7 +24,29 @@ usersRouter.post('/', async (request, response) => {
       .status(400)
       .json({ error: 'El email ya se encuentra en uso' });
   }
+console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.env.API_KEY);
+  
+//---------LA API--------------
+  try {
+    const apiKey = process.env.API_KEY;
+    const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
+    
+    const abstractResponse = await axios.get(url);
 
+    console.log('2. ¡Conexión exitosa! Objeto de Abstract recibido.');
+
+    const status = abstractResponse.data?.email_deliverability?.status;
+
+    if (status === 'undeliverable') {
+      return response
+        .status(400)
+        .json({ error: 'El correo electrónico proporcionado no existe o no es válido.' });
+    }
+  } catch (apiError) {
+    console.error('Error al conectar con Abstract API:', apiError.message);
+  }
+  //--------------------------------------
+  
   //se encripta la contraseña con la libreria bcrypt y un metodo .has, primero se define el numero de rondas y luego
   //se usa la función .hash para encriptar la contraseña
   const saltRounds = 10;
