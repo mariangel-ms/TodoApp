@@ -1,4 +1,5 @@
 require("dotenv").config();  // Carga las variables ocultas del archivo .env
+require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const express = require("express"); //El framework para crear el servidor
 const mongoose = require("mongoose"); // La librería para conectarnos y hablar con MongoDB
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
@@ -36,7 +37,6 @@ app.use('/img', express.static(path.resolve('img')));
 app.use('/login', express.static(path.resolve('views', 'login')));
 app.use('/verify', express.static(path.resolve('views', 'verify')));
 app.use('/verify/:id/:token', express.static(path.resolve('views', 'verify')));
-app.use('/todos', express.static(path.resolve('views', 'todos')));
 
 //Morgan permite elegir qué tan detallada es la informacio en la consolaa
 app.use(morgan("tiny"))

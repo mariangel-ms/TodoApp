@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 loginRouter.post('/', async (request, response) => {
+  console.log("Login request received");
   const { email, password } = request.body;
   const userExists = await User.findOne({ email });
   console.log(email, password);
