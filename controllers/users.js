@@ -24,7 +24,7 @@ usersRouter.post('/', async (request, response) => {
       .status(400)
       .json({ error: 'El email ya se encuentra en uso' });
   }
-console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.env.API_KEY);
+
   
 //---------LA API--------------
   try {
@@ -32,8 +32,6 @@ console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.
     const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
     
     const abstractResponse = await axios.get(url);
-
-    console.log('2. ¡Conexión exitosa! Objeto de Abstract recibido.');
 
     const status = abstractResponse.data?.email_deliverability?.status;
 
@@ -57,85 +55,91 @@ console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.
     name,
     email,
     passwordHash,
+    verified: true,
   });
 
   // Se guarda el usuario en la base de datos con el metodo de mongoose (.save)
-  const savedUser = await newUser.save();
-
-  //Se genera un token de acceso con la libreria jwt y el metodo .sign se usa para generar la firma
-  const token = jwt.sign(
-    { id: savedUser.id },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: '1d',
-    }
-  );
-  //Se configura el transportador para enviar el correo electronico con el metodo de nodenailer createTransport 
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  //se envia un correo de verificacion con el metodo de nodemailer sendMail
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: savedUser.email,
-    subject: 'Verificacion de usuario',
-    html: `<a href="${PAGE_URL}/verify/${savedUser.id}/${token}">Verificar correo</a>`, //Crea el enlace con el id y el token
-  });
-  //Retornar una respuesta al cliente
-  return response
+  await newUser.save();
+  
+return response
     .status(201)
-    .json('Usuario creado. por favor verifica tu correo');
-});
+.json('Usuario creado. por favor verifica tu correo');
+})
+
+  // //Se genera un token de acceso con la libreria jwt y el metodo .sign se usa para generar la firma
+  // const token = jwt.sign(
+  //   { id: savedUser.id },
+  //   process.env.ACCESS_TOKEN_SECRET,
+  //   {
+  //     expiresIn: '1d',
+  //   }
+  // );
+  // //Se configura el transportador para enviar el correo electronico con el metodo de nodenailer createTransport 
+  // const transporter = nodemailer.createTransport({
+  //   host: 'smtp.gmail.com',
+  //   port: 465,
+  //   secure: true,
+  //   auth: {
+  //     user: process.env.EMAIL_USER,
+  //     pass: process.env.EMAIL_PASS,
+  //   },
+  // });
+  // //se envia un correo de verificacion con el metodo de nodemailer sendMail
+  // await transporter.sendMail({
+  //   from: process.env.EMAIL_USER,
+  //   to: savedUser.email,
+  //   subject: 'Verificacion de usuario',
+  //   html: `<a href="${PAGE_URL}/verify/${savedUser.id}/${token}">Verificar correo</a>`, //Crea el enlace con el id y el token
+  // });
+  //Retornar una respuesta al cliente
+//   return response
+//     .status(201)
+//     .json('Usuario creado. por favor verifica tu correo');
+// });
 
 
 // Ruta para verificar el usuario mediante un token que se envia al correo electronico
-usersRouter.patch('/:id/:token', async (request, response) => {
-  // Verificar el token y actualizar el usuario
-  try {
-    const token = request.params.token;
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const id = decodedToken.id;
-    //Se busca por el id y se le agrega el verificado
-    await User.findByIdAndUpdate(id, { verified: true });
-    return response.sendStatus(200);
+// usersRouter.patch('/:id/:token', async (request, response) => {
+//   // Verificar el token y actualizar el usuario
+//   try {
+//     const token = request.params.token;
+//     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+//     const id = decodedToken.id;
+//     //Se busca por el id y se le agrega el verificado
+//     await User.findByIdAndUpdate(id, { verified: true });
+//     return response.sendStatus(200);
 
-  } catch (error) {
-    const id = request.params.id;
-    const { email } = await User.findById(id);
+//   } catch (error) {
+//     const id = request.params.id;
+//     const { email } = await User.findById(id);
 
-    //Se crea un nuevo token
-        const token = jwt.sign({ id: id }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '1d'
-        });
+//     //Se crea un nuevo token
+//         const token = jwt.sign({ id: id }, process.env.ACCESS_TOKEN_SECRET, {
+//         expiresIn: '1d'
+//         });
     
-    //Se envia el email de nuevo
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-    //Enviar el email de verificacion
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Verificacion de usuario',
-      html: `<a href="${PAGE_URL}/verify/${id}/${token}">Verificar correo</a>`,
-    });
+//     //Se envia el email de nuevo
+//     const transporter = nodemailer.createTransport({
+//       host: 'smtp.gmail.com',
+//       port: 465,
+//       secure: true,
+//       auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS,
+//       },
+//     });
+//     //Enviar el email de verificacion
+//     await transporter.sendMail({
+//       from: process.env.EMAIL_USER,
+//       to: email,
+//       subject: 'Verificacion de usuario',
+//       html: `<a href="${PAGE_URL}/verify/${id}/${token}">Verificar correo</a>`,
+//     });
     
-    //Retornar un error al cliente
-return response.status(400).json({ error: 'El link ya expiro. Se ha enviado un nuevo link de verificacion' });
-  }
-});
+//     //Retornar un error al cliente
+// return response.status(400).json({ error: 'El link ya expiro. Se ha enviado un nuevo link de verificacion' });
+//   }
+// });
 
 // Ruta para obtener todos los usuarios
 module.exports = usersRouter;

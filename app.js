@@ -1,9 +1,10 @@
+require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const express = require("express"); //El framework para crear el servidor
 const mongoose = require("mongoose"); // La librería para conectarnos y hablar con MongoDB
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
-require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const logoutRouter = require('./controllers/logout')
 const cors = require("cors") //Middleware para permitir/bloquear peticiones desde otros puertos o dominios
 const cookieParser = require("cookie-parser") //Middleware para leer y manipular las cookies que envía el navegador
 const morgan = require("morgan") //Middleware para ver en la consola las peticiones HTTP que van llegando (Logs)
@@ -43,5 +44,6 @@ app.use(morgan("tiny"))
 //Rutas backend
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
+app.use("/api/logout", logoutRouter)
 
 module.exports = app;
