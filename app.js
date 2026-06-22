@@ -2,11 +2,11 @@ const express = require("express"); //El framework para crear el servidor
 const mongoose = require("mongoose"); // La librería para conectarnos y hablar con MongoDB
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
 require("dotenv").config();  // Carga las variables ocultas del archivo .env
+const loginRouter = require("./controllers/login");
 const usersRouter = require('./controllers/users')
-const loginRouter = require('./controllers/login')
-const cors = require("cors") //Middleware para permitir/bloquear peticiones desde otros puertos o dominios
-const cookieParser = require("cookie-parser") //Middleware para leer y manipular las cookies que envía el navegador
-const morgan = require("morgan") //Middleware para ver en la consola las peticiones HTTP que van llegando (Logs)
+const cors = require("cors")
+const cookieParser = require("cookie-parser")
+const morgan = require("morgan")
 
 const app = express();
 
@@ -35,7 +35,6 @@ app.use('/img', express.static(path.resolve('img')));
 app.use('/login', express.static(path.resolve('views', 'login')));
 app.use('/verify', express.static(path.resolve('views', 'verify')));
 app.use('/verify/:id/:token', express.static(path.resolve('views', 'verify')));
-app.use('/todos', express.static(path.resolve('views', 'todos')));
 
 //Morgan permite elegir qué tan detallada es la informacio en la consolaa
 app.use(morgan("tiny"))

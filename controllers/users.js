@@ -24,7 +24,7 @@ usersRouter.post('/', async (request, response) => {
       .status(400)
       .json({ error: 'El email ya se encuentra en uso' });
   }
-console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.env.API_KEY);
+console.log('Intentando conectar con Abstract. Tu clave actual es:', process.env.API_KEY);
   
 //---------LA API--------------
   try {
@@ -33,7 +33,7 @@ console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.
     
     const abstractResponse = await axios.get(url);
 
-    console.log('2. ¡Conexión exitosa! Objeto de Abstract recibido.');
+    console.log('¡Conexión exitosa! Objeto de Abstract recibido.');
 
     const status = abstractResponse.data?.email_deliverability?.status;
 
