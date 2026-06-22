@@ -67,8 +67,12 @@ form.addEventListener("submit", async (e) => {
       email: emailInput.value,
       password: passwordInput.value,
     };
+
+    console.log(newUser);
     //Se envia el usuario al backend
     const {data} = await axios.post("/api/users", newUser);
+
+    console.log(data);
 
      createNotification(false, data);
     setTimeout(() => {

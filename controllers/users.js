@@ -9,6 +9,7 @@ const { PAGE_URL } = require('../config'); // Importar la URL de la página desd
 //se valida que los campos no estén vacíos y se hace desestructuracion de objetos
 usersRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body;
+  console.log(name, email, password);
   if (!name || !email || !password) {
     return response
       .status(400)
@@ -24,27 +25,27 @@ usersRouter.post('/', async (request, response) => {
       .status(400)
       .json({ error: 'El email ya se encuentra en uso' });
   }
-console.log('1. Intentando conectar con Abstract. Tu clave actual es:', process.env.API_KEY);
+
   
 //---------LA API--------------
-  try {
-    const apiKey = process.env.API_KEY;
-    const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
+  // try {
+  //   const apiKey = process.env.API_KEY;
+  //   const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
     
-    const abstractResponse = await axios.get(url);
+  //   const abstractResponse = await axios.get(url);
 
-    console.log('2. ¡Conexión exitosa! Objeto de Abstract recibido.');
+  //   console.log('¡Conexión exitosa! Objeto de Abstract recibido.');
 
-    const status = abstractResponse.data?.email_deliverability?.status;
+  //   const status = abstractResponse.data?.email_deliverability?.status;
 
-    if (status === 'undeliverable') {
-      return response
-        .status(400)
-        .json({ error: 'El correo electrónico proporcionado no existe o no es válido.' });
-    }
-  } catch (apiError) {
-    console.error('Error al conectar con Abstract API:', apiError.message);
-  }
+  //   if (status === 'undeliverable') {
+  //     return response
+  //       .status(400)
+  //       .json({ error: 'El correo electrónico proporcionado no existe o no es válido.' });
+  //   }
+  // } catch (apiError) {
+  //   console.error('Error al conectar con Abstract API:', apiError.message);
+  // }
   //--------------------------------------
   
   //se encripta la contraseña con la libreria bcrypt y un metodo .has, primero se define el numero de rondas y luego
