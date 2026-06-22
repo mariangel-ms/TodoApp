@@ -1,7 +1,7 @@
+require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const express = require("express"); //El framework para crear el servidor
 const mongoose = require("mongoose"); // La librería para conectarnos y hablar con MongoDB
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
-require("dotenv").config();  // Carga las variables ocultas del archivo .env
 const loginRouter = require("./controllers/login");
 const usersRouter = require('./controllers/users')
 const cors = require("cors")
