@@ -27,24 +27,23 @@ usersRouter.post('/', async (request, response) => {
   }
 
 
-  
 //---------LA API--------------
-  // try {
-  //   const apiKey = process.env.API_KEY;
-  //   const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
+  try {
+    const apiKey = process.env.API_KEY;
+    const url = `https://emailreputation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
     
     const abstractResponse = await axios.get(url);
 
-  //   const status = abstractResponse.data?.email_deliverability?.status;
+    const status = abstractResponse.data?.email_deliverability?.status;
 
-  //   if (status === 'undeliverable') {
-  //     return response
-  //       .status(400)
-  //       .json({ error: 'El correo electrónico proporcionado no existe o no es válido.' });
-  //   }
-  // } catch (apiError) {
-  //   console.error('Error al conectar con Abstract API:', apiError.message);
-  // }
+    if (status === 'undeliverable') {
+      return response
+        .status(400)
+        .json({ error: 'El correo electrónico proporcionado no existe o no es válido.' });
+    }
+  } catch (apiError) {
+    console.error('Error al conectar con Abstract API:', apiError.message);
+  }
   //--------------------------------------
   
   //se encripta la contraseña con la libreria bcrypt y un metodo .has, primero se define el numero de rondas y luego
@@ -65,7 +64,7 @@ usersRouter.post('/', async (request, response) => {
   
 return response
     .status(201)
-.json('Usuario creado. por favor verifica tu correo');
+.json('Usuario creado exitosamente');
 })
 
   // //Se genera un token de acceso con la libreria jwt y el metodo .sign se usa para generar la firma
