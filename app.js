@@ -5,12 +5,15 @@ const mongoose = require("mongoose"); // La librería para conectarnos y hablar 
 const path = require("path") //para manejar y resolver rutas de carpetas de forma segura
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const todosRouter = require('./controllers/todos')
 const logoutRouter = require('./controllers/logout')
 const cors = require("cors") //Middleware para permitir/bloquear peticiones desde otros puertos o dominios
 const cookieParser = require("cookie-parser") //Middleware para leer y manipular las cookies que envía el navegador
-const morgan = require("morgan") //Middleware para ver en la consola las peticiones HTTP que van llegando (Logs)
+const morgan = require("morgan"); //Middleware para ver en la consola las peticiones HTTP que van llegando (Logs)
+const { userExtractor } = require("./middleware/auth");
 
 const app = express();
+exports.app = app;
 
 (async() => {
 
@@ -45,6 +48,7 @@ app.use(morgan("tiny"))
 //Rutas backend
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
+app.use("/api/todos", userExtractor, todosRouter)
 app.use("/api/logout", logoutRouter)
 
 module.exports = app;
