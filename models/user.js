@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { app } = require("../app");
 
 // Se definen las propiedades o atributos de la base de datos
 const userSchema = new mongoose.Schema({
@@ -11,7 +12,11 @@ const userSchema = new mongoose.Schema({
     verified:{
         type: Boolean,
         default: false
-    }
+    },
+    todos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Todo'
+    }]
 })
 
 userSchema.set('toJSON', {
@@ -28,3 +33,4 @@ const User = mongoose.model('User', userSchema);
 
 //Se exporta el modelo
 module.exports = User;
+
